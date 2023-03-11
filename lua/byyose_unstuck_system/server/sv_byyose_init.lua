@@ -37,7 +37,7 @@ function B_CollisionProps(pPos, minBound, maxBound)
     return false
 end
 
-local function B_FindNewPos(ply, try)
+function B_FindNewPos(ply, try)
 
     local minBound, maxBound = ply:GetCollisionBounds()
     local oldZVelo = ply:GetVelocity().z
@@ -74,7 +74,7 @@ local function B_FindNewPos(ply, try)
     end)
 end
 
-local function B_Unstuck(ply)
+function B_Unstuck(ply)
     if ply:GetMoveType() == MOVETYPE_OBSERVER or ply:InVehicle() or not ply:Alive() then return end
 
     B_FindNewPos(ply, 0)
@@ -82,18 +82,15 @@ end
 
 hook.Add("PlayerSay", "playersaystuck", function(ply, text)
     if (text == ByYoSe_Unstuck_Command) then
-
         if ply.UnstuckCurtime == nil then
             ply.UnstuckCurtime = CurTime() - 1
         end
-
         if (ply.UnstuckCurtime < CurTime()) then
             if ply:Alive() then
                 ply.UnstuckCurtime = CurTime() + 10
                 B_Unstuck(ply) 
             end
         end
-
         return ""
     end
 end)
